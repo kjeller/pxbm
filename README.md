@@ -6,7 +6,7 @@ Only tested with MSYS2, but should work in all linux environment.
 
 Compile: gcc main.c bitmap.c
 
-#TODOs
+# TODOs
 -- Support for parsing arguments: for loading in .xbm files that are not predefined in code. (maybe argp or getopt long)
 
 -- Support other bitmap formats (maybe netpbm?)
