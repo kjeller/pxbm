@@ -1,5 +1,6 @@
 #include "xbmprint.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 // =========================
 // Bitmaps used for testing
@@ -28,6 +29,10 @@ XMB test_9x4 = {
 // ==============================
 
 int main(int argc, char *argv[]) {
+	if(argc < 4) {
+		printf("Missing arguments!");
+		return(1);
+	}
 
 	//Handle input as <R> <G> <B>
 	print_xmb(&loink, atoi(argv[1]), atoi(argv[2]), atoi(argv[3]));
