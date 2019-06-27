@@ -6,9 +6,6 @@ CFLAGS := -I $(IDIR)
 
 ODIR   := obj
 
-# If you're familiar with bash scripts, you may have come across patsubst before.
-# ex: $(patsubst %.c, $(IDIR)/%, bar) produces: bar.c ../include/bar
-
 _DEPS  := xbmprint.h
 DEPS   := $(patsubst %, $(IDIR)/%, $(_DEPS))   
 
