@@ -15,7 +15,6 @@ There are test files which shows how to compile with your own .xbm files.
 Run the executable with parameters <R> <G> <B> e.g. ```./a.out 255 255 255``` will print the picture in white. 
 
 # TODOs
--- Add support for parsing arguments: for loading in .xbm files that are not predefined in code. (maybe argp or getopt long)
 
 -- Add support for other bitmap formats (maybe netpbm?)
 
