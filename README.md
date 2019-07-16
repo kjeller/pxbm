@@ -12,7 +12,7 @@ Note: The execution time is way faster with a precompiled .xbm file. The complex
 There are test files which shows how to compile with your own .xbm files.
 
 # Usage
-Run the executable with parameters <R> <G> <B> e.g. ```./a.out 255 255 255``` will print the picture in white. 
+Run the executable with parameters <filepath> <R> <G> <B> e.g. ```./a.out xbm/loink.xbm 255 255 255``` will print the picture in white. 
 
 # TODOs
 
