@@ -18,5 +18,6 @@ Run the executable with parameters <filepath> <R> <G> <B> e.g. ./a.out xbm/loink
 # TODOs
 
 -- Add makefile in the future.
+
 -- Add support for other bitmap formats (maybe netpbm?)
 
