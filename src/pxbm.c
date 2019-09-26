@@ -1,7 +1,6 @@
 #include "pxbm.h"
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
 /**
  * From FFmpeg in ffmpeg/libavdcodec/xbmdec.c
@@ -93,8 +92,8 @@ XBM *decode_xbm(uint8_t *data) {
       ptr++;
     }
     uint8_t x = (uint8_t)strtol(ptr+1, NULL, 16);
-    printf("%d\n", (int)x);
-    printf("i:%d\n",i);
+    printf("%d\n", x);
+    printf("i:%ld\n",i);
     // This causes segfault
     xptr->data[i++] = x;
     ptr++;
@@ -122,10 +121,10 @@ void print_xbm(XBM *p, uint8_t r, uint8_t g, uint8_t b) {
         if(byte & (1<<k))
           printf("\033[48;2;%d;%d;%dm  ", r, g, b);
         else
-          printf("\033[48;2;0;0;0m  ");
+          printf("\033[0m  ");
       }
     }
     printf("\n");
   }
-  printf("\033[48;2;0;0;0m  ");
+  printf("\033[0m  ");
 }

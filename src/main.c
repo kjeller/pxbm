@@ -34,10 +34,8 @@ int main(int argc, char *argv[]) {
 		printf("Error: Missing arguments!");
 		return(1);
 	}
-	char *fname = malloc(256);
-	fname = argv[1]; // First argument should be filename
-	uint8_t *data = read_file(fname);
-	free(fname);
+	// argv[1] is the filename
+	uint8_t *data = read_file(argv[1]);
 
 	if(data) {
 		XBM *xptr = decode_xbm(data);

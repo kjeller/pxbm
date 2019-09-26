@@ -1,5 +1,5 @@
+#include <stdlib.h>
 typedef unsigned char uint8_t;
-typedef int int64_t;
 
 typedef struct _xbm {
     uint8_t *data;
