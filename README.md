@@ -1,23 +1,31 @@
 # pxbm
 Application for printing .xbm images (RGB) for ANSI based consoles.
 
-Works decoding .xbm files and prints it out by changing bakground color (ANSI color codes) and printing " " (whitespace) to the terminal/shell.
-Bits that are highlighted in .xbm file will be colored and the 0's will be blanks. As of now, only the highlighted bits
-may be colored.
+Works by decoding .xbm file, and printing it bytewise, by changing bakground color (ANSI color codes) 
+and printing " " (whitespace) to the terminal/shell.
+Bits that are highlighted in .xbm file will be colored and the 0's will be blanks.
+As of now, only the highlighted bits may be colored.
 
 ![Alt text](https://i.imgur.com/D24CIG5.png "XBM print in action")
 
-Compile: gcc main.c pxbm.c
+# Compile
+Run makefile with ```make```
 
-Note: The execution time is way faster with a precompiled .xbm file. The complexity will be higher for decoding and printing.
+Note: The execution time is way faster with a precompiled .xbm file. 
+The complexity will be higher for decoding and printing.
 There are test files which shows how to compile with your own .xbm files.
+An example of this can be seen in the Usage section.
 
 # Usage
-Run the executable with parameters <filepath> <R> <G> <B> e.g. ./a.out xbm/loink.xbm 255 255 255  will print the picture in white. 
+To run: 
+``` 
+pxbm <filepath> <R> <G> <B>
+which will look like this for:
+pxbm  xbm/loink.xbm 255 255 255
+
+```
 
 # TODOs
 
--- Add makefile in the future.
-
--- Add support for other bitmap formats (maybe netpbm?)
+-- Add support for other bitmap formats (maybe netpbm, bitmap?)
 
