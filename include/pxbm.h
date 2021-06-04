@@ -1,12 +1,11 @@
 #include <stdlib.h>
-typedef unsigned char uint8_t;
 
 typedef struct _xbm {
-    uint8_t *data;
+    char *data;
     int width;
     int height;
 } XBM;
 
-uint8_t *read_file(uint8_t *fname);
-XBM *decode_xbm(uint8_t *data);
-void print_xbm(XBM *p, uint8_t r, uint8_t g, uint8_t b);
+char *read_file(char *fname);
+int parse_xbm(XBM *xptr, char *data);
+void print_xbm(XBM *p, unsigned char r, unsigned char g, unsigned char b);
