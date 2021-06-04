@@ -17,6 +17,7 @@ all:    $(MAIN)
 	@echo  pxbm has been compiled successfully
 
 $(MAIN): $(OBJS) 
+	@mkdir -p bin
 	$(CC) $(CFLAGS) $(addprefix -I, $(INCLUDES)) -o $(MAIN) $(OBJS)
 
 # this is a suffix replacement rule for building .o's from .c's
