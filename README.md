@@ -21,7 +21,7 @@ To run:
 ``` 
 pxbm <filepath> <R> <G> <B>
 which will look like this for:
-pxbm  xbm/loink.xbm 255 255 255
+./pxbm  xbm/loink.xbm 255 255 255
 
 ```
 
