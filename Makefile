@@ -1,7 +1,7 @@
 CC 				= gcc
 CFLAGS 		= -Wall -g
 INCLUDES 	= include res
-SRCS 			= src/main.c src/pxbm.c src/util.c
+SRCS 			= $(shell find src/ -type f -name '*.c')
 OBJS 			= $(SRCS:.c=.o)
 MAIN 			= bin/pxbm
 
