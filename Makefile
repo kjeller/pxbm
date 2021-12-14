@@ -1,7 +1,7 @@
 CC 				= gcc
 CFLAGS 		= -Wall -g
 INCLUDES 	= include res
-SRCS 			= src/main.c src/pxbm.c
+SRCS 			= $(shell find src/ -type f -name '*.c')
 OBJS 			= $(SRCS:.c=.o)
 MAIN 			= bin/pxbm
 
@@ -28,7 +28,7 @@ $(MAIN): $(OBJS)
 	$(CC) $(CFLAGS) $(addprefix -I, $(INCLUDES)) -c $<  -o $@
 
 clean:
-	$(RM) *.o *~ $(MAIN)
+	$(RM) $(OBJS) *~ $(MAIN)
 
 depend: $(SRCS)
 	makedepend $(INCLUDES) $^

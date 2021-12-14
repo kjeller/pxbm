@@ -1,7 +1,7 @@
 # pxbm
 Application for printing .xbm images (RGB) for ANSI based consoles.
 
-Works by decoding .xbm file, and printing it bytewise, by changing bakground color (ANSI color codes) 
+Works by decoding .xbm file, and printing it bytewise, by changing background color (ANSI color codes) 
 and printing " " (whitespace) to the terminal/shell.
 Bits that are highlighted in .xbm file will be colored and the 0's will be blanks.
 As of now, only the highlighted bits may be colored.
@@ -19,7 +19,7 @@ An example of this can be seen in the Usage section.
 # Usage
 To run: 
 ``` 
-pxbm <filepath> <R> <G> <B>
+pxbm [options] <filepath> [R] [G] [B]
 which will look like this for:
 ./pxbm xbm/loink.xbm 255 255 255
 
@@ -27,5 +27,5 @@ which will look like this for:
 
 # TODOs
 
--- Add support for other bitmap formats (maybe netpbm, bitmap?)
+-- Add support for other bitmap formats (bitmap?)
 
