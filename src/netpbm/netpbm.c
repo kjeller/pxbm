@@ -6,11 +6,14 @@
 
 #include "netpbm/netpbm.h"
 #include "netpbm/pgm.h"
+#include "netpbm/ppm.h"
 
 #include "netpbm/p1.h"
 #include "netpbm/p2.h"
+#include "netpbm/p3.h"
 #include "netpbm/p4.h"
 #include "netpbm/p5.h"
+#include "netpbm/p6.h"
 
 NETPBM *read_pbm_file(char *fname)
 {
@@ -43,6 +46,11 @@ void print_netpbm(NETPBM *p, uint8_t r, uint8_t g, uint8_t b)
             print_netpgm(p);
             break;
 
+        case '3':
+        case '6':
+            print_netppm(p);
+            break;
+
         default:
             break;
     }
@@ -67,10 +75,14 @@ int parse_netpbm(NETPBM *pbm)
             return parse_netpbm_p1(pbm, seek);
         case '2':
             return parse_netpbm_p2(pbm, seek);
+        case '3':
+            return parse_netpbm_p3(pbm, seek);
         case '4':
             return parse_netpbm_p4(pbm, seek);
         case '5':
             return parse_netpbm_p5(pbm, seek);
+        case '6':
+            return parse_netpbm_p6(pbm, seek);
         default:
             break;
     }
