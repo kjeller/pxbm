@@ -1,4 +1,5 @@
 #include "pxbm.h"
+#include "util.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -36,24 +37,8 @@ static int parse_str_int(const char *p, int len, const char *key)
  * However this won't be a problem since such big .xbm files
  * are too big to even show in the terminal window.
  */
-char *read_file(char *fname) {
-  FILE *fptr;
-  char *data = 0;
-
-  // Open stream if file exists
-  if((fptr = fopen(fname, "r")) == NULL)
-    return data;
-
-  // Inspired by https://stackoverflow.com/a/174552
-  fseek(fptr, 0, SEEK_END); // goto end of file
-  long len = ftell(fptr); // get length
-  fseek(fptr, 0, SEEK_SET); // goto start of file
-  data = (char *)malloc(len); // allocate memory for the data
-  if(data) {
-    fread(data, 1, len, fptr); // copy data to buffer
-  }
-  fclose(fptr);
-  return data;
+char *read_xbm_file(char *fname) {
+    return (char *) read_file(fname, NULL);
 }
 
 /**
