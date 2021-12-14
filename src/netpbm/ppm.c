@@ -37,4 +37,3 @@ void print_netppm(NETPBM *p)
         puts("");
     }
 }
-

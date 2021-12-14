@@ -98,4 +98,3 @@ void skip_comments_and_whitespace(uint8_t **seek_ptr)
         while (isspace(**seek_ptr)) *seek_ptr += 1;
     }
 }
-

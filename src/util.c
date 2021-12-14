@@ -27,4 +27,3 @@ uint8_t *read_file(char *fname, size_t *filesize)
 
     return data;
 }
-
