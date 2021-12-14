@@ -27,5 +27,5 @@ which will look like this for:
 
 # TODOs
 
--- Add support for other bitmap formats (maybe netpbm, bitmap?)
+-- Add support for other bitmap formats (bitmap?)
 
