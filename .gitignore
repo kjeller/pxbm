@@ -22,3 +22,8 @@ bin
 *.ko
 *.obj
 *.elf
+
+
+# Added by cargo
+
+/target
