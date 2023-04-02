@@ -46,7 +46,7 @@ impl PrintableFormat for Xbm {
      * Prints xmb picture to console by reading bytewise (the bits) line by line
      * and changing background color (ANSI) for every bit that is 'highlighted'.
      */
-    fn print(&self) {
+    fn print(&self, r: u8, g: u8, b: u8) {
         // Width of bitmap in bytes
         let w_bytes: i32 = ((self.width + 7) / 8) as i32;
 
@@ -58,7 +58,7 @@ impl PrintableFormat for Xbm {
                 for k in 0..8 as i32 {
                     // Loop through the bits
                     if byte & (1 << k) > 0 {
-                        print!("\x1b[48;2;{0};{1};{2}m  ", 255, 255, 255);
+                        print!("\x1b[48;2;{0};{1};{2}m  ", r, g, b);
                     } else {
                         print!("\x1b[0m  ");
                     }
