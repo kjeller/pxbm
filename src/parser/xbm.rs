@@ -9,8 +9,6 @@ pub struct Xbm {
 
 impl Xbm {
     pub fn parse(input: &str) -> Xbm {
-        print!("{}", input);
-
         let width = Regex::new(r"_width (\d+)")
             .unwrap()
             .captures(input)
@@ -34,9 +32,9 @@ impl Xbm {
             .collect();
 
         Xbm {
-            data: data,
-            width: width,
-            height: height,
+            data,
+            width,
+            height,
         }
     }
 }
