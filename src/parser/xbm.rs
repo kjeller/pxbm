@@ -52,12 +52,12 @@ impl PrintableFormat for Xbm {
 
         for i in 0..self.height as i32 {
             for j in 0..w_bytes as i32 {
-                let byte: u8 = self.data[(i * w_bytes + j) as usize];
+                // Get current byte with offset
+                let byte = self.data[(i * w_bytes + j) as usize];
 
                 for k in 0..8 as i32 {
                     // Loop through the bits
-                    //for(int k = 0; k < 8; k++) {
-                    if byte & (1 << k) == 0 {
+                    if byte & (1 << k) > 0 {
                         print!("\x1b[48;2;{0};{1};{2}m  ", 255, 255, 255);
                     } else {
                         print!("\x1b[0m  ");
