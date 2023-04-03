@@ -1,5 +1,6 @@
 # pxbm
-Application for printing .xbm images (RGB) for ANSI based consoles.
+
+Originally written in C. Application for printing .xbm images (RGB) for ANSI based consoles.
 
 Works by decoding .xbm file, and printing it bytewise, by changing background color (ANSI color codes) 
 and printing " " (whitespace) to the terminal/shell.
@@ -8,20 +9,24 @@ As of now, only the highlighted bits may be colored.
 
 ![Alt text](https://i.imgur.com/D24CIG5.png "XBM print in action")
 
-# Compile
-Run makefile with ```make```
-
-Note: The execution time is way faster with a precompiled .xbm file. 
-The complexity will be higher for decoding and printing.
-There are test files which shows how to compile with your own .xbm files.
-An example of this can be seen in the Usage section.
+# Compile & Run
+`cargo build` & `cargo run`
 
 # Usage
 To run: 
 ``` 
-pxbm [options] <filepath> [R] [G] [B]
-which will look like this for:
-./pxbm xbm/loink.xbm 255 255 255
+Usage: pxbm <command> <filepath> [red] [green] [blue]
+
+Arguments:
+  <command>   [possible values: xbm, netpbm]
+  <filepath>  File to print
+  [red]       Red [default: 255]
+  [green]     Green [default: 255]
+  [blue]      Blue [default: 255]
+
+Options:
+  -h, --help     Print help
+  -V, --version  Print version
 
 ```
 
