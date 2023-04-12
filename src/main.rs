@@ -47,6 +47,6 @@ fn main() {
             parser = Box::new(Netpbm::parse(input.as_str()));
         }
     }
-    
+
     parser.print(cli.r, cli.g, cli.b);
 }

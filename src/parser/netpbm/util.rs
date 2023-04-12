@@ -1,14 +1,13 @@
-use std::{iter::Peekable, str::Lines};
+use std::{borrow::BorrowMut, iter::Peekable, str::Lines};
 
-use super::{MagicNumber, NetpbmHeader};
+use super::{MagicNumber, Netpbm, NetpbmHeader};
 
-pub fn parse_netpbm_header(lines: &mut Peekable<Lines>, filetype: MagicNumber) -> NetpbmHeader {
-    // TODO check what type here P1 doesn't use max value or bit dpeth
-    // TODO use u16 for max value
-    let (width, height, max_value, bit_depth): (u8, u8, u8, u8);
+fn parse_netpbm_header(lines: &mut Peekable<Lines>, filetype: MagicNumber) -> NetpbmHeader {
+    let (width, height, bit_depth): (u8, u8, u8);
+    let max_value: u32;
 
     if let Some(line) = lines.next() {
-        let line_vec = split_line_into_u8(line);
+        let line_vec = split_line_into_vec(line);
         width = line_vec[0];
         height = line_vec[1];
     } else {
@@ -21,16 +20,24 @@ pub fn parse_netpbm_header(lines: &mut Peekable<Lines>, filetype: MagicNumber) -
             skip_comments_and_whitespace(lines);
 
             match lines.next() {
-                Some(mv) => match mv.parse::<u8>() {
-                    Ok(mv) => {
-                        if mv > 255 {
-                            (mv, 16)
-                        } else {
-                            (mv, 8)
+                Some(mv) => {
+                    println!("parsed {mv}");
+                    let first_integer: Vec<&str> = mv.split_whitespace().collect();
+                    if let Some(first_integer) = first_integer.first() {
+                        match first_integer.parse::<u32>() {
+                            Ok(mv) => {
+                                if mv > 255 {
+                                    (mv, 16)
+                                } else {
+                                    (mv, 8)
+                                }
+                            }
+                            Err(_) => panic!("Parse error - expected max value"),
                         }
+                    } else {
+                        panic!("Parse error - expected max value");
                     }
-                    Err(_) => panic!("Parse error - expected max value"),
-                },
+                }
                 _ => panic!("Parse error - expected max value line"),
             }
         }
@@ -45,6 +52,18 @@ pub fn parse_netpbm_header(lines: &mut Peekable<Lines>, filetype: MagicNumber) -
         max_value,
         filetype,
     }
+}
+
+pub fn parse(lines: &mut Peekable<Lines>, filetype: MagicNumber) -> Netpbm {
+    let header = parse_netpbm_header(lines, filetype);
+
+    let mut data: Vec<u32> = Vec::new();
+    while let Some(line) = lines.next() {
+        let mut line_vec = split_line_into_vec(line);
+        data.append(line_vec.borrow_mut());
+    }
+
+    Netpbm { header, data }
 }
 
 pub fn skip_comments_and_whitespace(lines: &mut Peekable<Lines>) {
@@ -64,10 +83,11 @@ pub fn skip_comments_and_whitespace(lines: &mut Peekable<Lines>) {
     }
 }
 
-pub fn split_line_into_u8(line: &str) -> Vec<u8> {
+fn split_line_into_vec<T: std::str::FromStr>(line: &str) -> Vec<T> {
     line.split_whitespace()
         .into_iter()
-        .map(|f| match f.parse::<u8>() {
+        .filter(|&f| f.chars().all(char::is_numeric))
+        .map(|f| match f.parse::<T>() {
             Ok(w) => w,
             Err(_) => panic!("Parse error - expected unsigned integer on line"),
         })

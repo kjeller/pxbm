@@ -1,5 +1,6 @@
-mod p1;
-mod p2;
+mod pbm;
+mod pgm;
+mod ppm;
 mod util;
 
 use std::{borrow::BorrowMut, iter::Peekable, str::Lines};
@@ -27,13 +28,13 @@ pub struct NetpbmHeader {
     width: u8,
     height: u8,
     bit_depth: u8,
-    max_value: u8,
+    max_value: u32,
     filetype: MagicNumber,
 }
 
 pub struct Netpbm {
     header: NetpbmHeader,
-    data: Vec<u8>,
+    data: Vec<u32>,
 }
 
 impl Netpbm {
@@ -43,7 +44,7 @@ impl Netpbm {
 
         util::skip_comments_and_whitespace(lines.borrow_mut());
         if let Some(ft) = lines.next() {
-            if let Ok(ft) = ft.parse::<MagicNumber>() {
+            if let Ok(ft) = ft[0..2].parse::<MagicNumber>() {
                 filetype = ft;
             } else {
                 panic!("Parse error - could not parse filetype");
@@ -52,29 +53,19 @@ impl Netpbm {
             panic!("Parse error - expected line with filetype");
         }
         util::skip_comments_and_whitespace(lines.borrow_mut());
-
-        match filetype {
-            MagicNumber::P1 => p1::Filetype::parse(lines.borrow_mut(), filetype),
-            MagicNumber::P2 => p2::Filetype::parse(lines.borrow_mut(), filetype),
-            MagicNumber::P3 => !todo!(),
-            MagicNumber::P4 => !todo!(),
-            MagicNumber::P5 => !todo!(),
-            MagicNumber::P6 => !todo!(),
-            _ => panic!("Unexpected filetype"),
-        }
+        util::parse(lines.borrow_mut(), filetype)
     }
 }
 
 impl Parser for Netpbm {
     fn print(&self, r: u8, g: u8, b: u8) {
         match self.header.filetype {
-            MagicNumber::P1 => p1::Filetype::print(self, r, g, b),
-            MagicNumber::P2 => p2::Filetype::print(self, r, g, b),
-            MagicNumber::P3 => !todo!(),
-            MagicNumber::P4 => !todo!(),
-            MagicNumber::P5 => !todo!(),
-            MagicNumber::P6 => !todo!(),
-            _ => panic!("Unexpected filetype"),
+            MagicNumber::P1 => pbm::print_netpbm_p1(self, r, g, b),
+            MagicNumber::P2 => pgm::print_netpgm(self),
+            MagicNumber::P3 => ppm::print_netppm(self),
+            MagicNumber::P4 => pbm::print_netpbm_p4(self, r, g, b),
+            MagicNumber::P5 => pgm::print_netpgm(self),
+            MagicNumber::P6 => ppm::print_netppm(self),
         }
     }
 }
