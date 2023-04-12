@@ -1,16 +1,24 @@
 # pxbm
 
-Originally written in C. Application for printing .xbm images (RGB) for ANSI based consoles.
+`pxbm` is used for printing bitmap images on ANSI-based shell.
+It works by changing the background color (ANSI color codes) and printing " " (whitespace) to stdout. 
 
-Works by decoding .xbm file, and printing it bytewise, by changing background color (ANSI color codes) 
-and printing " " (whitespace) to the terminal/shell.
-Bits that are highlighted in .xbm file will be colored and the 0's will be blanks.
-As of now, only the highlighted bits may be colored.
+[Originally written in C](https://github.com/kjeller/pxbm/tree/c_impl).
 
-![Alt text](https://i.imgur.com/D24CIG5.png "XBM print in action")
+Supported formats:
+| Format | ASCII (plain) | Binary (raw) | Extension | RGB input flag |
+|--------------|-----------|------------|-----------|-----------|
+| X BitMap     | Yes       | No         | .xbm      | Yes |
+| Portable BitMap | Yes (P1)  | Yes (P4)   | .pbm   | Yes |
+| Portable GrayMap | Yes (P2)  | Yes (P5)   | .pgm | No |
+| Portable PixMap | Yes (P3)  | Yes (P6)   | .pgm | No
 
-# Compile & Run
-`cargo build` & `cargo run`
+
+## Example XBM print
+![Alt text](img/loink_xbm.png "XBM print in action")
+
+# Compile
+`cargo build`
 
 # Usage
 To run: 
@@ -32,5 +40,6 @@ Options:
 
 # TODOs
 
--- Add support for other bitmap formats (bitmap?)
-
+- Add support for other bitmap formats
+  - X PixMap
+- Automatic testing of all formats presumed to be supported
