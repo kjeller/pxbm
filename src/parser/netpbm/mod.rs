@@ -24,16 +24,15 @@ pub enum MagicNumber {
 }
 
 pub struct NetpbmHeader {
+    width: u8,
+    height: u8,
     bit_depth: u8,
     max_value: u8,
-    extension: String,
     filetype: MagicNumber,
 }
 
 pub struct Netpbm {
     header: NetpbmHeader,
-    width: u8,
-    height: u8,
     data: Vec<u8>,
 }
 
@@ -56,7 +55,7 @@ impl Netpbm {
 
         match filetype {
             MagicNumber::P1 => p1::Filetype::parse(lines.borrow_mut(), filetype),
-            MagicNumber::P2 => !todo!(),
+            MagicNumber::P2 => p2::Filetype::parse(lines.borrow_mut(), filetype),
             MagicNumber::P3 => !todo!(),
             MagicNumber::P4 => !todo!(),
             MagicNumber::P5 => !todo!(),
@@ -70,7 +69,7 @@ impl Parser for Netpbm {
     fn print(&self, r: u8, g: u8, b: u8) {
         match self.header.filetype {
             MagicNumber::P1 => p1::Filetype::print(self, r, g, b),
-            MagicNumber::P2 => !todo!(),
+            MagicNumber::P2 => p2::Filetype::print(self, r, g, b),
             MagicNumber::P3 => !todo!(),
             MagicNumber::P4 => !todo!(),
             MagicNumber::P5 => !todo!(),
