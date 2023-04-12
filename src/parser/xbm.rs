@@ -1,10 +1,11 @@
-use super::PrintableFormat;
 use regex::Regex;
 
+use super::Parser;
+
 pub struct Xbm {
-    data: Vec<u8>,
     width: u8,
     height: u8,
+    data: Vec<u8>,
 }
 
 impl Xbm {
@@ -21,14 +22,10 @@ impl Xbm {
             .unwrap()[1]
             .parse::<u8>()
             .unwrap();
-
-        let data: Vec<u8> = Regex::new(r"0[xX][0-9a-fA-F]+")
+        let data: Vec<u8> = Regex::new(r"0[xX]([0-9a-fA-F]+)")
             .unwrap()
             .captures_iter(input)
-            .map(|f| {
-                let no_prefix = f[0].trim_start_matches("0x");
-                u8::from_str_radix(no_prefix, 16).unwrap()
-            })
+            .map(|f| u8::from_str_radix(&f[1], 16).unwrap())
             .collect();
 
         Xbm {
@@ -39,7 +36,7 @@ impl Xbm {
     }
 }
 
-impl PrintableFormat for Xbm {
+impl Parser for Xbm {
     /**
      * Prints xmb picture to console by reading bytewise (the bits) line by line
      * and changing background color (ANSI) for every bit that is 'highlighted'.
@@ -56,7 +53,7 @@ impl PrintableFormat for Xbm {
                 for k in 0..8 as i32 {
                     // Loop through the bits
                     if byte & (1 << k) > 0 {
-                        print!("\x1b[48;2;{0};{1};{2}m  ", r, g, b);
+                        print!("\x1b[48;2;{r};{g};{b}m  ");
                     } else {
                         print!("\x1b[0m  ");
                     }

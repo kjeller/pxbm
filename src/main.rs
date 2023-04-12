@@ -1,9 +1,7 @@
 mod parser;
 mod util;
 
-use parser::Format;
-use parser::FormatParser;
-use parser::PrintableFormat;
+use parser::{netpbm::Netpbm, xbm::Xbm, Parser as TypeParser};
 
 use std::path::PathBuf;
 
@@ -38,22 +36,17 @@ enum Command {
 
 fn main() {
     let cli = Cli::parse();
-    let fp: FormatParser;
+    let input = util::to_string(cli.filepath.as_os_str());
+    let parser: Box<dyn TypeParser>;
 
     match cli.command {
         Command::Xbm => {
-            fp = FormatParser {
-                format: Format::Xbm,
-            };
+            parser = Box::new(Xbm::parse(input.as_str()));
         }
         Command::Netpbm => {
-            fp = FormatParser {
-                format: Format::Xbm, // TODO Fix type
-            };
+            parser = Box::new(Netpbm::parse(input.as_str()));
         }
     }
-
-    let input = util::to_string(cli.filepath.as_os_str());
-    let p = fp.parse(input.as_str());
-    p.print(cli.r, cli.g, cli.b);
+    
+    parser.print(cli.r, cli.g, cli.b);
 }
