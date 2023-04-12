@@ -1,0 +1,10 @@
+[package]
+name = "pxbm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+regex = "1.7.0"
+clap = { version = "4.2.1", features = ["derive"] }
+itertools = "0.10.5"
+parse-display = "0.8.0"
