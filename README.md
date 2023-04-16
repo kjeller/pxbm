@@ -38,8 +38,3 @@ Options:
 
 ```
 
-# TODOs
-
-- Add support for other bitmap formats
-  - X PixMap
-- Automatic testing of all formats presumed to be supported
