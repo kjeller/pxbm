@@ -1,11 +1,13 @@
 mod parser;
 mod util;
+mod color;
 
-use parser::{netpbm::Netpbm, xbm::Xbm, Parser as TypeParser};
+use parser::{netpbm::Netpbm, xbm::Xbm, Parser as TypeParser, xpm::Xpm};
 
 use std::path::PathBuf;
 
 use clap::{Parser, ValueEnum};
+use anyhow::Result;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -32,21 +34,18 @@ struct Cli {
 enum Command {
     Xbm,
     Netpbm,
+    Xpm,
 }
 
-fn main() {
+fn main() -> Result<()> {
     let cli = Cli::parse();
     let input = util::to_string(cli.filepath.as_os_str());
-    let parser: Box<dyn TypeParser>;
-
-    match cli.command {
-        Command::Xbm => {
-            parser = Box::new(Xbm::parse(input.as_str()));
-        }
-        Command::Netpbm => {
-            parser = Box::new(Netpbm::parse(input.as_str()));
-        }
-    }
+    let parser: Box<dyn TypeParser> = match cli.command {
+        Command::Xbm => Box::new(Xbm::parse(input.as_str())),
+        Command::Netpbm => Box::new(Netpbm::parse(input.as_str())),
+        Command::Xpm => Box::new(Xpm::parse(input.as_str())?),
+    };
 
     parser.print(cli.r, cli.g, cli.b);
+    Ok(())
 }

@@ -9,6 +9,7 @@ Supported formats:
 | Format | ASCII (plain) | Binary (raw) | Extension | RGB input flag |
 |--------------|-----------|------------|-----------|-----------|
 | X BitMap     | Yes       | No         | .xbm      | Yes |
+| X PixMap     | Yes       | No         | .xpm      | No |
 | Portable BitMap | Yes (P1)  | Yes (P4)   | .pbm   | Yes |
 | Portable GrayMap | Yes (P2)  | Yes (P5)   | .pgm | No |
 | Portable PixMap | Yes (P3)  | Yes (P6)   | .pgm | No
