@@ -1,0 +1,19 @@
+#define test_format 1
+#define test_width 23
+#define test_height 5
+#define test_ncolors 5
+#define test_chars_per_pixel 1
+static char *test_colors[] = {
+"r", "#ff0000",
+"g", "#00ff00",
+"b", "#0000ff",
+"p", "PeachPuff",
+".", "None"
+};
+static char *test_pixels[] = {
+"rrrrr.ggggg.bbbbb.ppppp",
+"..r...g.....b.......p..",
+"..r...ggg...bbbbb...p..",
+"..r...g.........b...p..",
+"..r...ggggg.bbbbb...p.."
+};
