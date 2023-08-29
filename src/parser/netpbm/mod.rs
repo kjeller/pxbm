@@ -3,7 +3,8 @@ mod pgm;
 mod ppm;
 mod util;
 
-use std::{borrow::BorrowMut, iter::Peekable, str::Lines};
+use std::{iter::Peekable, str::Lines};
+use anyhow::{Result, anyhow};
 
 use parse_display::{Display, FromStr};
 
@@ -14,7 +15,7 @@ pub trait NetpbmFileType {
     fn print(netpbm: &Netpbm, r: u8, g: u8, b: u8);
 }
 
-#[derive(Display, FromStr, PartialEq, Debug)]
+#[derive(Display, FromStr, PartialEq, Debug, Clone, Copy)]
 pub enum MagicNumber {
     P1,
     P2,
@@ -24,6 +25,7 @@ pub enum MagicNumber {
     P6,
 }
 
+#[derive(Debug)]
 pub struct NetpbmHeader {
     width: u8,
     height: u8,
@@ -32,28 +34,33 @@ pub struct NetpbmHeader {
     filetype: MagicNumber,
 }
 
+#[derive(Debug)]
 pub struct Netpbm {
     header: NetpbmHeader,
     data: Vec<u32>,
 }
 
-impl Netpbm {
-    pub fn parse(input: &str) -> Netpbm {
-        let filetype: MagicNumber;
-        let mut lines = input.lines().peekable();
+#[derive(Debug, thiserror::Error)]
+pub enum NetpbmError {
+    #[error("Invalid magic number. Should be one of P1, P2, P3, P4, P5, P6.")]
+    InvalidMagicNumber,
 
-        util::skip_comments_and_whitespace(lines.borrow_mut());
-        if let Some(ft) = lines.next() {
-            if let Ok(ft) = ft[0..2].parse::<MagicNumber>() {
-                filetype = ft;
-            } else {
-                panic!("Parse error - could not parse filetype");
-            }
-        } else {
-            panic!("Parse error - expected line with filetype");
-        }
-        util::skip_comments_and_whitespace(lines.borrow_mut());
-        util::parse(lines.borrow_mut(), filetype)
+    #[error("Could not parse {field}.")]
+    ParseError {
+        field: String,
+    },
+}
+
+impl Netpbm {
+    pub fn parse(input: &[u8]) -> Result<Netpbm> {
+        let magic_number_bytes = &input.get(0..2).ok_or(anyhow!("Missing magic number."))?;
+        let magic_number: MagicNumber =
+            std::str::from_utf8(&magic_number_bytes)
+            .map_err(|_| NetpbmError::InvalidMagicNumber)?
+            .parse()
+            .map_err(|_| NetpbmError::InvalidMagicNumber)?;
+        
+        util::parse(input, magic_number)
     }
 }
 

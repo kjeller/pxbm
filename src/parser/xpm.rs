@@ -25,7 +25,8 @@ pub struct Xpm {
 }
 
 impl Xpm {
-    pub fn parse(input: &str) -> Result<Xpm> {
+    pub fn parse(input: &[u8]) -> Result<Xpm> {
+        let input = std::str::from_utf8(input)?;
         let header = input.lines().next().unwrap();
         match header {
             "! XPM2" => Self::parse_xpm2(input),

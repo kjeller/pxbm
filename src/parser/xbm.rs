@@ -9,7 +9,8 @@ pub struct Xbm {
 }
 
 impl Xbm {
-    pub fn parse(input: &str) -> Xbm {
+    pub fn parse(input: &[u8]) -> Xbm {
+        let input = std::str::from_utf8(input).unwrap();
         let width = Regex::new(r"_width (\d+)")
             .unwrap()
             .captures(input)
