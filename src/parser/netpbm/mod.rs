@@ -52,7 +52,7 @@ impl Netpbm {
     pub fn parse(input: &[u8]) -> Result<Netpbm> {
         let magic_number_bytes = &input.get(0..2).ok_or(anyhow!("Missing magic number."))?;
         let magic_number: MagicNumber =
-            std::str::from_utf8(&magic_number_bytes)
+            std::str::from_utf8(magic_number_bytes)
             .map_err(|_| NetpbmError::InvalidMagicNumber)?
             .parse()
             .map_err(|_| NetpbmError::InvalidMagicNumber)?;

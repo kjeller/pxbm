@@ -10,13 +10,11 @@ impl Netpbm {
     pub fn print_netpgm(&self, writer: &mut dyn Write) -> Result<()> {
         for i in 0..self.header.height {
             for j in 0..self.header.width {
-                let pix: u32;
-
-                if self.header.bit_depth == 16 {
-                    pix = self.data[(i * self.header.width + j) as usize] * 65535 / self.header.max_value / 255;
+                let pix = if self.header.bit_depth == 16 {
+                    self.data[(i * self.header.width + j) as usize] * 65535 / self.header.max_value / 255
                 } else {
-                    pix = (self.data[(i * self.header.width + j) as usize] * 255 / self.header.max_value) as u32;
-                }
+                    self.data[(i * self.header.width + j) as usize] * 255 / self.header.max_value
+                };
 
                 pxbm_write!(writer, "{}", Color::new(Some((pix as u8, pix as u8, pix as u8))))?;
             }

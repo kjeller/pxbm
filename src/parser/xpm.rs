@@ -103,7 +103,7 @@ impl Xpm {
         let colors_list = colors_list.iter().tuples();
         let mut color_mapping = HashMap::new();
         for (pattern, color) in colors_list {
-            color_mapping.insert(pattern.to_owned(), Color::from_str(&color)?);
+            color_mapping.insert(pattern.to_owned(), Color::from_str(color)?);
         }
 
         let re_pixels_list =
@@ -112,9 +112,9 @@ impl Xpm {
                 .multi_line(true)
                 .build()
                 .unwrap();
-        let pixels_list = (&re_pixels_list
+        let pixels_list = re_pixels_list
             .captures(input)
-            .ok_or_else(|| anyhow!("Pixel data not found"))?[1])
+            .ok_or_else(|| anyhow!("Pixel data not found"))?[1]
             .to_owned();
         let pixels_list = pixels_list
             .split(',')

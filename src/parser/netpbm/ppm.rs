@@ -14,7 +14,7 @@ impl Netpbm {
 
                 if self.header.bit_depth == 16 {
                     // clamping to 0-255, but still supporting 0-65535
-                    r = self.data[(i * 3 * self.header.width + j + 0) as usize] * 65535
+                    r = self.data[(i * 3 * self.header.width + j) as usize] * 65535
                         / self.header.max_value
                         / 255;
                     g = self.data[(i * 3 * self.header.width + j + 1) as usize] * 65535
@@ -24,12 +24,9 @@ impl Netpbm {
                         / self.header.max_value
                         / 255;
                 } else {
-                    r = (self.data[(i * 3 * self.header.width + j + 0) as usize] * 255 / self.header.max_value)
-                        as u32;
-                    g = (self.data[(i * 3 * self.header.width + j + 1) as usize] * 255 / self.header.max_value)
-                        as u32;
-                    b = (self.data[(i * 3 * self.header.width + j + 2) as usize] * 255 / self.header.max_value)
-                        as u32;
+                    r = self.data[(i * 3 * self.header.width + j) as usize] * 255 / self.header.max_value;
+                    g = self.data[(i * 3 * self.header.width + j + 1) as usize] * 255 / self.header.max_value;
+                    b = self.data[(i * 3 * self.header.width + j + 2) as usize] * 255 / self.header.max_value;
                 }
 
                 pxbm_write!(writer, "{}", Color::new(Some((r as u8, g as u8, b as u8))))?;

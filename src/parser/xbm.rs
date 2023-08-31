@@ -50,11 +50,11 @@ impl<Writer: Write> Parser<Writer> for Xbm {
         let w_bytes: i32 = ((self.width + 7) / 8) as i32;
 
         for i in 0..self.height as i32 {
-            for j in 0..w_bytes as i32 {
+            for j in 0..w_bytes {
                 // Get current byte with offset
                 let byte = self.data[(i * w_bytes + j) as usize];
 
-                for k in 0..8 as i32 {
+                for k in 0..8_i32 {
                     // Loop through the bits
                     if byte & (1 << k) > 0 {
                         pxbm_write!(writer, "{color}")?;

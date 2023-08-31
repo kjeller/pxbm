@@ -55,7 +55,7 @@ impl FromStr for Color {
         }
 
         // Hex
-        if !s.starts_with("#") || s.len() != 7 {
+        if !s.starts_with('#') || s.len() != 7 {
             return Err(ColorError::InvalidColorFormat);
         }
 
