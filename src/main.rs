@@ -1,4 +1,4 @@
-use pxbm::parser::{netpbm::Netpbm, xbm::Xbm, Parser as TypeParser, xpm::Xpm};
+use pxbm::{parser::{netpbm::Netpbm, xbm::Xbm, Parser as TypeParser, xpm::Xpm}, color::Color};
 
 use std::path::PathBuf;
 
@@ -35,6 +35,7 @@ enum Command {
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
+    let color = Color::new(Some((cli.r, cli.g, cli.b)));
     let input = std::fs::read(cli.filepath)?;
     let parser: Box<dyn TypeParser> = match cli.command {
         Command::Xbm => Box::new(Xbm::parse(&input)),
@@ -42,6 +43,6 @@ fn main() -> Result<()> {
         Command::Xpm => Box::new(Xpm::parse(&input)?),
     };
 
-    parser.print(cli.r, cli.g, cli.b);
+    parser.print(color);
     Ok(())
 }

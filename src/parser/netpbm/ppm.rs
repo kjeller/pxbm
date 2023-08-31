@@ -1,3 +1,5 @@
+use crate::color::Color;
+
 use super::Netpbm;
 
 pub fn print_netppm(p: &Netpbm) {
@@ -25,7 +27,7 @@ pub fn print_netppm(p: &Netpbm) {
                     as u32;
             }
 
-            print!("\x1b[48;2;{r};{g};{b}m  \x1b[m");
+            print!("{}", Color::new(Some((r as u8, g as u8, b as u8))));
         }
         println!();
     }

@@ -1,5 +1,7 @@
 use regex::Regex;
 
+use crate::color::Color;
+
 use super::Parser;
 
 pub struct Xbm {
@@ -42,7 +44,7 @@ impl Parser for Xbm {
      * Prints xmb picture to console by reading bytewise (the bits) line by line
      * and changing background color (ANSI) for every bit that is 'highlighted'.
      */
-    fn print(&self, r: u8, g: u8, b: u8) {
+    fn print(&self, color: Color) {
         // Width of bitmap in bytes
         let w_bytes: i32 = ((self.width + 7) / 8) as i32;
 
@@ -54,14 +56,13 @@ impl Parser for Xbm {
                 for k in 0..8 as i32 {
                     // Loop through the bits
                     if byte & (1 << k) > 0 {
-                        print!("\x1b[48;2;{r};{g};{b}m  ");
+                        print!("{color}");
                     } else {
-                        print!("\x1b[0m  ");
+                        print!("{}", Color::new(None));
                     }
                 }
             }
             println!();
         }
-        print!("\x1b[0m  ");
     }
 }

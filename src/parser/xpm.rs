@@ -223,7 +223,7 @@ impl Xpm {
 }
 
 impl Parser for Xpm {
-    fn print(&self, _r: u8, _g: u8, _b: u8) {
+    fn print(&self, _color: Color) {
         for (i, pixel) in self
             .data
             .iter()

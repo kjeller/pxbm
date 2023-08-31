@@ -8,6 +8,8 @@ use anyhow::{Result, anyhow};
 
 use parse_display::{Display, FromStr};
 
+use crate::color::Color;
+
 use super::Parser;
 
 pub trait NetpbmFileType {
@@ -65,12 +67,12 @@ impl Netpbm {
 }
 
 impl Parser for Netpbm {
-    fn print(&self, r: u8, g: u8, b: u8) {
+    fn print(&self, color: Color) {
         match self.header.filetype {
-            MagicNumber::P1 => pbm::print_netpbm_p1(self, r, g, b),
+            MagicNumber::P1 => pbm::print_netpbm_p1(self, color),
             MagicNumber::P2 => pgm::print_netpgm(self),
             MagicNumber::P3 => ppm::print_netppm(self),
-            MagicNumber::P4 => pbm::print_netpbm_p4(self, r, g, b),
+            MagicNumber::P4 => pbm::print_netpbm_p4(self, color),
             MagicNumber::P5 => pgm::print_netpgm(self),
             MagicNumber::P6 => ppm::print_netppm(self),
         }

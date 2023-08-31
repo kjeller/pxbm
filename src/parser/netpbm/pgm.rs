@@ -1,3 +1,5 @@
+use crate::color::Color;
+
 use super::Netpbm;
 
 pub fn print_netpgm(p: &Netpbm) {
@@ -11,10 +13,8 @@ pub fn print_netpgm(p: &Netpbm) {
                 pix = (p.data[(i * p.header.width + j) as usize] * 255 / p.header.max_value) as u32;
             }
 
-            print!("\x1b[48;2;{pix};{pix};{pix}m  ");
+            print!("{}", Color::new(Some((pix as u8, pix as u8, pix as u8))));
         }
         println!();
     }
-
-    print!("\x1b[0m  ");
 }

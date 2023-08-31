@@ -1,23 +1,23 @@
+use crate::color::Color;
+
 use super::Netpbm;
 
-pub fn print_netpbm_p1(p: &Netpbm, r: u8, g: u8, b: u8) {
+pub fn print_netpbm_p1(p: &Netpbm, color: Color) {
     for i in 0..p.header.height {
         for j in 0..p.header.width {
             let pix = p.data[(i * p.header.width + j) as usize];
 
             if pix > 0 {
-                print!("\x1b[48;2;{r};{g};{b}m  ");
+                print!("{color}");
             } else {
-                print!("\x1b[0m  ");
+                print!("{}", Color::new(None));
             }
         }
         println!();
     }
-
-    print!("\x1b[0m  ");
 }
 
-pub fn print_netpbm_p4(p: &Netpbm, r: u8, g: u8, b: u8) {
+pub fn print_netpbm_p4(p: &Netpbm, color: Color) {
     let width_in_bytes = (p.header.width + 7) / 8;
     for i in 0..p.header.height {
         for j in 0..p.header.width {
@@ -25,14 +25,12 @@ pub fn print_netpbm_p4(p: &Netpbm, r: u8, g: u8, b: u8) {
 
             for k in 7..=0 {
                 if byte & (1 << k) > 0 {
-                    print!("\x1b[48;2;{r};{g};{b}m  ");
+                    print!("{color}");
                 } else {
-                    print!("\x1b[0m  ");
+                    print!("{}", Color::new(None));
                 }
             }
         }
         println!();
     }
-
-    print!("\x1b[0m  ");
 }
