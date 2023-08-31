@@ -37,12 +37,12 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     let color = Color::new(Some((cli.r, cli.g, cli.b)));
     let input = std::fs::read(cli.filepath)?;
-    let parser: Box<dyn TypeParser> = match cli.command {
+    let parser: Box<dyn TypeParser<std::io::Stdout>> = match cli.command {
         Command::Xbm => Box::new(Xbm::parse(&input)),
         Command::Netpbm => Box::new(Netpbm::parse(&input)?),
         Command::Xpm => Box::new(Xpm::parse(&input)?),
     };
 
-    parser.print(color);
+    parser.print(color, &mut std::io::stdout())?;
     Ok(())
 }

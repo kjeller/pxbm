@@ -3,7 +3,7 @@ mod pgm;
 mod ppm;
 mod util;
 
-use std::{iter::Peekable, str::Lines};
+use std::io::Write;
 use anyhow::{Result, anyhow};
 
 use parse_display::{Display, FromStr};
@@ -11,11 +11,6 @@ use parse_display::{Display, FromStr};
 use crate::color::Color;
 
 use super::Parser;
-
-pub trait NetpbmFileType {
-    fn parse(input: &mut Peekable<Lines>, filetype: MagicNumber) -> Netpbm;
-    fn print(netpbm: &Netpbm, r: u8, g: u8, b: u8);
-}
 
 #[derive(Display, FromStr, PartialEq, Debug, Clone, Copy)]
 pub enum MagicNumber {
@@ -66,15 +61,13 @@ impl Netpbm {
     }
 }
 
-impl Parser for Netpbm {
-    fn print(&self, color: Color) {
+impl<Writer: Write> Parser<Writer> for Netpbm {
+    fn print(&self, color: Color, writer: &mut Writer) -> Result<()> {
         match self.header.filetype {
-            MagicNumber::P1 => pbm::print_netpbm_p1(self, color),
-            MagicNumber::P2 => pgm::print_netpgm(self),
-            MagicNumber::P3 => ppm::print_netppm(self),
-            MagicNumber::P4 => pbm::print_netpbm_p4(self, color),
-            MagicNumber::P5 => pgm::print_netpgm(self),
-            MagicNumber::P6 => ppm::print_netppm(self),
+            MagicNumber::P1 => self.print_netpbm_p1(color, writer),
+            MagicNumber::P4 => self.print_netpbm_p4(color, writer),
+            MagicNumber::P2 | MagicNumber::P5 => self.print_netpgm(writer),
+            MagicNumber::P3 | MagicNumber::P6 => self.print_netppm(writer),
         }
     }
 }

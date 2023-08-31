@@ -1,6 +1,9 @@
-use regex::Regex;
+use std::io::Write;
 
-use crate::color::Color;
+use regex::Regex;
+use anyhow::Result;
+
+use crate::{color::Color, pxbm_write, pxbm_writeln};
 
 use super::Parser;
 
@@ -39,12 +42,10 @@ impl Xbm {
     }
 }
 
-impl Parser for Xbm {
-    /**
-     * Prints xmb picture to console by reading bytewise (the bits) line by line
-     * and changing background color (ANSI) for every bit that is 'highlighted'.
-     */
-    fn print(&self, color: Color) {
+impl<Writer: Write> Parser<Writer> for Xbm {
+    // Prints xbm picture to console by reading bytewise (the bits) line by line
+    // and changing background color (ANSI) for every bit that is 'highlighted'.
+    fn print(&self, color: Color, writer: &mut Writer) -> Result<()> {
         // Width of bitmap in bytes
         let w_bytes: i32 = ((self.width + 7) / 8) as i32;
 
@@ -56,13 +57,14 @@ impl Parser for Xbm {
                 for k in 0..8 as i32 {
                     // Loop through the bits
                     if byte & (1 << k) > 0 {
-                        print!("{color}");
+                        pxbm_write!(writer, "{color}")?;
                     } else {
-                        print!("{}", Color::new(None));
+                        pxbm_write!(writer, "{}", Color::new(None))?;
                     }
                 }
             }
-            println!();
+            pxbm_writeln!(writer)?;
         }
+        Ok(())
     }
 }

@@ -1,34 +1,41 @@
-use crate::color::Color;
+use std::io::Write;
+
+use anyhow::Result;
+
+use crate::{color::Color, pxbm_write, pxbm_writeln};
 
 use super::Netpbm;
 
-pub fn print_netppm(p: &Netpbm) {
-    for i in 0..p.header.height {
-        for j in (0..p.header.width * 3).step_by(3) {
-            let (r, g, b): (u32, u32, u32);
+impl Netpbm {
+    pub fn print_netppm(&self, writer: &mut dyn Write) -> Result<()> {
+        for i in 0..self.header.height {
+            for j in (0..self.header.width * 3).step_by(3) {
+                let (r, g, b): (u32, u32, u32);
 
-            if p.header.bit_depth == 16 {
-                // clamping to 0-255, but still supporting 0-65535
-                r = p.data[(i * 3 * p.header.width + j + 0) as usize] * 65535
-                    / p.header.max_value
-                    / 255;
-                g = p.data[(i * 3 * p.header.width + j + 1) as usize] * 65535
-                    / p.header.max_value
-                    / 255;
-                b = p.data[(i * 3 * p.header.width + j + 2) as usize] * 65535
-                    / p.header.max_value
-                    / 255;
-            } else {
-                r = (p.data[(i * 3 * p.header.width + j + 0) as usize] * 255 / p.header.max_value)
-                    as u32;
-                g = (p.data[(i * 3 * p.header.width + j + 1) as usize] * 255 / p.header.max_value)
-                    as u32;
-                b = (p.data[(i * 3 * p.header.width + j + 2) as usize] * 255 / p.header.max_value)
-                    as u32;
+                if self.header.bit_depth == 16 {
+                    // clamping to 0-255, but still supporting 0-65535
+                    r = self.data[(i * 3 * self.header.width + j + 0) as usize] * 65535
+                        / self.header.max_value
+                        / 255;
+                    g = self.data[(i * 3 * self.header.width + j + 1) as usize] * 65535
+                        / self.header.max_value
+                        / 255;
+                    b = self.data[(i * 3 * self.header.width + j + 2) as usize] * 65535
+                        / self.header.max_value
+                        / 255;
+                } else {
+                    r = (self.data[(i * 3 * self.header.width + j + 0) as usize] * 255 / self.header.max_value)
+                        as u32;
+                    g = (self.data[(i * 3 * self.header.width + j + 1) as usize] * 255 / self.header.max_value)
+                        as u32;
+                    b = (self.data[(i * 3 * self.header.width + j + 2) as usize] * 255 / self.header.max_value)
+                        as u32;
+                }
+
+                pxbm_write!(writer, "{}", Color::new(Some((r as u8, g as u8, b as u8))))?;
             }
-
-            print!("{}", Color::new(Some((r as u8, g as u8, b as u8))));
+            pxbm_writeln!(writer)?;
         }
-        println!();
+        Ok(())
     }
 }

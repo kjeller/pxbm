@@ -1,9 +1,9 @@
 use anyhow::{anyhow, Result};
 use itertools::Itertools;
 use regex::{Regex, RegexBuilder};
-use std::{collections::HashMap, str::FromStr};
+use std::{collections::HashMap, str::FromStr, io::Write};
 
-use crate::color::Color;
+use crate::{color::Color, pxbm_write, pxbm_writeln};
 
 use super::Parser;
 
@@ -222,8 +222,8 @@ impl Xpm {
     }
 }
 
-impl Parser for Xpm {
-    fn print(&self, _color: Color) {
+impl<Writer: Write> Parser<Writer> for Xpm {
+    fn print(&self, _color: Color, writer: &mut Writer) -> Result<()> {
         for (i, pixel) in self
             .data
             .iter()
@@ -233,15 +233,16 @@ impl Parser for Xpm {
         {
             let pixel = String::from_iter(pixel);
             if let Some(color) = self.color_mapping.get(&pixel) {
-                print!("{color}");
+                pxbm_write!(writer, "{color}")?;
             } else {
-                println!();
+                pxbm_writeln!(writer)?;
                 eprintln!("Found unknown pixel symbol: \"{pixel}\"");
                 break;
             }
             if (i + 1) % self.width == 0 {
-                println!();
+                pxbm_writeln!(writer)?;
             }
         }
+        Ok(())
     }
 }
