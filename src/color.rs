@@ -1,6 +1,6 @@
 use std::{fmt::Display, str::FromStr, num::ParseIntError};
 
-#[derive(Clone, Copy, Default, Debug)]
+#[derive(Clone, Copy, Default, Debug, PartialEq)]
 pub struct Color {
     r: u8,
     g: u8,

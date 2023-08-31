@@ -56,11 +56,12 @@ fn normalize_binary(bytes: &[u8], filetype: MagicNumber) -> Result<Vec<u8>> {
     let width = next_field(&mut iter)?;
     let height = next_field(&mut iter)?;
     let max_value = match filetype {
-        MagicNumber::P1 | MagicNumber::P2 | MagicNumber::P3 => None,
-        MagicNumber::P4 | MagicNumber::P5 | MagicNumber::P6 => {
+        MagicNumber::P1 | MagicNumber::P4 => None,
+        MagicNumber::P2 | MagicNumber::P3 | MagicNumber::P5 | MagicNumber::P6 => {
             Some(next_field(&mut iter)?)
         },
     };
+    let _ = iter.next(); // The whitespace character separating the ASCII from the binary data
 
     let mut v = Vec::new();
     v.extend_from_slice(&magic_number);

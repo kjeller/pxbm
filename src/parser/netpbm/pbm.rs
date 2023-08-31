@@ -25,7 +25,7 @@ impl Netpbm {
     pub fn print_netpbm_p4(&self, color: Color, writer: &mut dyn Write) -> Result<()> {
         let width_in_bytes = (self.header.width + 7) / 8;
         for i in 0..self.header.height {
-            for j in 0..self.header.width {
+            for j in 0..width_in_bytes {
                 let byte = self.data[(i * width_in_bytes + j) as usize];
 
                 for k in (0..=7).rev() {

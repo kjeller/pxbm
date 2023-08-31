@@ -7,6 +7,7 @@ use crate::{color::Color, pxbm_write, pxbm_writeln};
 
 use super::Parser;
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum XpmFormat {
     Xpm1,
     Xpm2,
@@ -243,6 +244,92 @@ impl<Writer: Write> Parser<Writer> for Xpm {
                 pxbm_writeln!(writer)?;
             }
         }
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn validate_checkerboard(xpm: &Xpm) -> Result<()> {
+        let a = Color::new(Some((0xff, 0xee, 0xdd)));
+        let b = Color::new(Some((0x00, 0x11, 0x22)));
+
+        assert_eq!(xpm.width, 8);
+        assert_eq!(xpm._height, 2);
+        assert_eq!(xpm._num_colors, 2);
+        assert_eq!(xpm.chars_per_pixel, 1);
+        assert_eq!(xpm.color_mapping.get("a"), Some(&a));
+        assert_eq!(xpm.color_mapping.get("b"), Some(&b));
+        assert_eq!(xpm.data, "ababababbabababa".chars().collect::<Vec<char>>());
+
+        let mut output = Vec::<u8>::new();
+        xpm.print(a, &mut output)?;
+        
+        let expected = format!("{a}{b}{a}{b}{a}{b}{a}{b}\n{b}{a}{b}{a}{b}{a}{b}{a}\n");
+        assert_eq!(output, expected.as_bytes());
+        Ok(())
+    }
+
+    #[test]
+    fn simple_bitmap_xpm1() -> Result<()> {
+        // Checkerboard pattern
+        let input = b"
+            #define test_format 1
+            #define test_width 8
+            #define test_height 2
+            #define test_ncolors 2
+            #define test_chars_per_pixel 1
+            static char *test_colors[] = {
+                \"a\", \"#ffeedd\",
+                \"b\", \"#001122\"
+            };
+            static char *test_pixels[] = {
+                \"abababab\",
+                \"babababa\"
+            };
+        ";
+        let xpm = Xpm::parse(input)?;
+        assert_eq!(xpm.format, XpmFormat::Xpm1);
+        validate_checkerboard(&xpm)?;
+
+        Ok(())
+    }
+
+    #[test]
+    fn simple_bitmap_xpm2() -> Result<()> {
+        // Checkerboard pattern
+        let input = b"\
+            ! XPM2\n\
+            8 2 2 1\n\
+            a c #ffeedd\n\
+            b c #001122\n\
+            abababab\n\
+            babababa";
+        let xpm = Xpm::parse(input)?;
+        assert_eq!(xpm.format, XpmFormat::Xpm2);
+        validate_checkerboard(&xpm)?;
+
+        Ok(())
+    }
+
+    #[test]
+    fn simple_bitmap_xpm3() -> Result<()> {
+        // Checkerboard pattern
+        let input = r#"/* XPM */
+            static char *test[] = {
+                "8 2 2 1",
+                "a c #ffeedd",
+                "b c #001122",
+                "abababab",
+                "babababa"
+            };
+        "#.as_bytes();
+        let xpm = Xpm::parse(input)?;
+        assert_eq!(xpm.format, XpmFormat::Xpm3);
+        validate_checkerboard(&xpm)?;
+
         Ok(())
     }
 }
