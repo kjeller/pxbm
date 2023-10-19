@@ -14,7 +14,7 @@ impl Netpbm {
                 if pix > 0 {
                     pxbm_write!(writer, "{color}")?;
                 } else {
-                    pxbm_write!(writer, "{}", Color::new(None))?;
+                    pxbm_write!(writer, "{}", Color::transparent())?;
                 }
             }
             pxbm_writeln!(writer)?;
@@ -32,7 +32,7 @@ impl Netpbm {
                     if byte & (1 << k) > 0 {
                         pxbm_write!(writer, "{color}")?;
                     } else {
-                        pxbm_write!(writer, "{}", Color::new(None))?;
+                        pxbm_write!(writer, "{}", Color::transparent())?;
                     }
                 }
             }

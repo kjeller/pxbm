@@ -16,7 +16,7 @@ impl Netpbm {
                     self.data[(i * self.header.width + j) as usize] * 255 / self.header.max_value
                 };
 
-                pxbm_write!(writer, "{}", Color::new(Some((pix as u8, pix as u8, pix as u8))))?;
+                pxbm_write!(writer, "{}", Color::new((pix as u8, pix as u8, pix as u8)))?;
             }
             pxbm_writeln!(writer)?;
         }

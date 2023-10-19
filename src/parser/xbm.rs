@@ -59,7 +59,7 @@ impl<Writer: Write> Parser<Writer> for Xbm {
                     if byte & (1 << k) > 0 {
                         pxbm_write!(writer, "{color}")?;
                     } else {
-                        pxbm_write!(writer, "{}", Color::new(None))?;
+                        pxbm_write!(writer, "{}", Color::transparent())?;
                     }
                 }
             }
@@ -90,8 +90,8 @@ mod tests {
         assert_eq!(xbm.height, 2);
         assert_eq!(xbm.data, vec![0x55, 0xAA]);
 
-        let w = Color::new(Some((255, 255, 255)));
-        let b = Color::new(None);
+        let w = Color::new((255, 255, 255));
+        let b = Color::transparent();
         let mut output = Vec::<u8>::new();
         xbm.print(w, &mut output)?;
         

@@ -93,8 +93,8 @@ mod tests {
         assert_eq!(netpbm.header.filetype, MagicNumber::P1);
         assert_eq!(netpbm.data, vec![1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1]);
 
-        let a = Color::new(Some((0xff, 0xee, 0xdd)));
-        let b = Color::new(None);
+        let a = Color::new((0xff, 0xee, 0xdd));
+        let b = Color::transparent();
         let mut output = Vec::<u8>::new();
         netpbm.print(a, &mut output)?;
 
@@ -123,9 +123,9 @@ mod tests {
         assert_eq!(netpbm.header.filetype, MagicNumber::P2);
         assert_eq!(netpbm.data, vec![0, 7, 15, 15, 0, 7]);
 
-        let a = Color::new(Some((0x00, 0x00, 0x00)));
-        let b = Color::new(Some((0x77, 0x77, 0x77)));
-        let c = Color::new(Some((0xff, 0xff, 0xff)));
+        let a = Color::new((0x00, 0x00, 0x00));
+        let b = Color::new((0x77, 0x77, 0x77));
+        let c = Color::new((0xff, 0xff, 0xff));
         let mut output = Vec::<u8>::new();
         netpbm.print(a, &mut output)?;
 
@@ -158,12 +158,12 @@ mod tests {
         assert_eq!(netpbm.header.filetype, MagicNumber::P3);
         assert_eq!(netpbm.data, vec![255, 0, 0, 0, 255, 0, 0, 0, 255, 255, 255, 0, 255, 255, 255, 0, 0, 0]);
 
-        let a = Color::new(Some((255,   0,   0)));
-        let b = Color::new(Some((0, 255,   0)));
-        let c = Color::new(Some((0,   0, 255)));
-        let d = Color::new(Some((255, 255,   0 )));
-        let e = Color::new(Some((255, 255, 255)));
-        let f = Color::new(Some((0,   0,   0)));
+        let a = Color::new((255,   0,   0));
+        let b = Color::new((0, 255,   0));
+        let c = Color::new((0,   0, 255));
+        let d = Color::new((255, 255,   0 ));
+        let e = Color::new((255, 255, 255));
+        let f = Color::new((0,   0,   0));
         let mut output = Vec::<u8>::new();
         netpbm.print(a, &mut output)?;
 
@@ -188,8 +188,8 @@ mod tests {
         assert_eq!(netpbm.header.filetype, MagicNumber::P4);
         assert_eq!(netpbm.data, vec![0xaa, 0x55]);
 
-        let a = Color::new(Some((0xff, 0xee, 0xdd)));
-        let b = Color::new(None);
+        let a = Color::new((0xff, 0xee, 0xdd));
+        let b = Color::transparent();
         let mut output = Vec::<u8>::new();
         netpbm.print(a, &mut output)?;
 
@@ -216,9 +216,9 @@ mod tests {
         assert_eq!(netpbm.header.filetype, MagicNumber::P5);
         assert_eq!(netpbm.data, vec![0, 7, 15, 15, 0, 7]);
 
-        let a = Color::new(Some((0x00, 0x00, 0x00)));
-        let b = Color::new(Some((0x77, 0x77, 0x77)));
-        let c = Color::new(Some((0xff, 0xff, 0xff)));
+        let a = Color::new((0x00, 0x00, 0x00));
+        let b = Color::new((0x77, 0x77, 0x77));
+        let c = Color::new((0xff, 0xff, 0xff));
         let mut output = Vec::<u8>::new();
         netpbm.print(a, &mut output)?;
 
@@ -245,12 +245,12 @@ mod tests {
         assert_eq!(netpbm.header.filetype, MagicNumber::P6);
         assert_eq!(netpbm.data, vec![255, 0, 0, 0, 255, 0, 0, 0, 255, 255, 255, 0, 255, 255, 255, 0, 0, 0]);
 
-        let a = Color::new(Some((255,   0,   0)));
-        let b = Color::new(Some((0, 255,   0)));
-        let c = Color::new(Some((0,   0, 255)));
-        let d = Color::new(Some((255, 255,   0 )));
-        let e = Color::new(Some((255, 255, 255)));
-        let f = Color::new(Some((0,   0,   0)));
+        let a = Color::new((255,   0,   0));
+        let b = Color::new((0, 255,   0));
+        let c = Color::new((0,   0, 255));
+        let d = Color::new((255, 255,   0 ));
+        let e = Color::new((255, 255, 255));
+        let f = Color::new((0,   0,   0));
         let mut output = Vec::<u8>::new();
         netpbm.print(a, &mut output)?;
 

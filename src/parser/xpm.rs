@@ -253,8 +253,8 @@ mod tests {
     use super::*;
 
     fn validate_checkerboard(xpm: &Xpm) -> Result<()> {
-        let a = Color::new(Some((0xff, 0xee, 0xdd)));
-        let b = Color::new(Some((0x00, 0x11, 0x22)));
+        let a = Color::new((0xff, 0xee, 0xdd));
+        let b = Color::new((0x00, 0x11, 0x22));
 
         assert_eq!(xpm.width, 8);
         assert_eq!(xpm._height, 2);

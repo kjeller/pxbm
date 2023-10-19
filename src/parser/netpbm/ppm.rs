@@ -29,7 +29,7 @@ impl Netpbm {
                     b = self.data[(i * 3 * self.header.width + j + 2) as usize] * 255 / self.header.max_value;
                 }
 
-                pxbm_write!(writer, "{}", Color::new(Some((r as u8, g as u8, b as u8))))?;
+                pxbm_write!(writer, "{}", Color::new((r as u8, g as u8, b as u8)))?;
             }
             pxbm_writeln!(writer)?;
         }

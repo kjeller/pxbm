@@ -20,12 +20,12 @@ pub enum ColorError {
 pub type RgbTriple = (u8, u8, u8);
 
 impl Color {
-    pub fn new(color: Option<RgbTriple>) -> Self {
-        if let Some((r, g, b)) = color {
-            Self { r, g, b, transparent: false }
-        } else {
-            Self { r: 0, g: 0, b: 0, transparent: true }
-        }
+    pub fn new((r, g, b): RgbTriple) -> Self {
+        Self { r, g, b, transparent: false }
+    }
+
+    pub fn transparent() -> Self {
+        Self { r: 0, g: 0, b: 0, transparent: true }
     }
 }
 
@@ -46,12 +46,12 @@ impl FromStr for Color {
 
         // X11 color
         if let Ok([r, g, b]) = color_name::Color::val().by_string(s.to_owned()) {
-            return Ok(Color::new(Some((r, g, b))));
+            return Ok(Color::new((r, g, b)));
         }
 
         // Transparent
         if s.to_lowercase() == "none" {
-            return Ok(Color::new(None));
+            return Ok(Color::transparent());
         }
 
         // Hex
@@ -62,6 +62,6 @@ impl FromStr for Color {
         let rgb = u32::from_str_radix(&s[1..], 16)?;
         let [_, r, g, b] = rgb.to_be_bytes();
         
-        Ok(Color::new(Some((r, g, b))))
+        Ok(Color::new((r, g, b)))
     }
 }

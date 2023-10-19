@@ -35,7 +35,7 @@ enum Command {
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
-    let color = Color::new(Some((cli.r, cli.g, cli.b)));
+    let color = Color::new((cli.r, cli.g, cli.b));
     let input = std::fs::read(cli.filepath)?;
     let parser: Box<dyn TypeParser<std::io::Stdout>> = match cli.command {
         Command::Xbm => Box::new(Xbm::parse(&input)),
