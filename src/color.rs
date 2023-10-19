@@ -1,6 +1,6 @@
 use std::{fmt::Display, str::FromStr, num::ParseIntError};
 
-#[derive(Clone, Copy, Default, Debug)]
+#[derive(Clone, Copy, Default, Debug, PartialEq)]
 pub struct Color {
     r: u8,
     g: u8,
@@ -15,6 +15,18 @@ pub enum ColorError {
 
     #[error("Could not parse hex color string.")]
     ParseIntError(#[from] ParseIntError),
+}
+
+pub type RgbTriple = (u8, u8, u8);
+
+impl Color {
+    pub fn new((r, g, b): RgbTriple) -> Self {
+        Self { r, g, b, transparent: false }
+    }
+
+    pub fn transparent() -> Self {
+        Self { r: 0, g: 0, b: 0, transparent: true }
+    }
 }
 
 impl Display for Color {
@@ -34,22 +46,22 @@ impl FromStr for Color {
 
         // X11 color
         if let Ok([r, g, b]) = color_name::Color::val().by_string(s.to_owned()) {
-            return Ok(Color { r, g, b, transparent: false });
+            return Ok(Color::new((r, g, b)));
         }
 
         // Transparent
         if s.to_lowercase() == "none" {
-            return Ok(Color { r: 0, g: 0, b: 0, transparent: true });
+            return Ok(Color::transparent());
         }
 
         // Hex
-        if !s.starts_with("#") || s.len() != 7 {
+        if !s.starts_with('#') || s.len() != 7 {
             return Err(ColorError::InvalidColorFormat);
         }
 
         let rgb = u32::from_str_radix(&s[1..], 16)?;
         let [_, r, g, b] = rgb.to_be_bytes();
         
-        Ok(Color { r, g, b, transparent: false })
+        Ok(Color::new((r, g, b)))
     }
 }
